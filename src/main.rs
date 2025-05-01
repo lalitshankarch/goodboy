@@ -20,5 +20,8 @@ fn main() {
     cpu.and_8_rr(2, 5);
     println!("{}", cpu);
     cpu.swap_8_r(4);
+    cpu.load_8_rv(0, 0x00);
+    cpu.test_8_r(0, 3);
+    cpu.res_8_r(1, 3);
     println!("{}", cpu);
 }

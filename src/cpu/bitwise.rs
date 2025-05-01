@@ -53,10 +53,28 @@ impl Cpu {
         self.set_znhc(swapped == 0, false, false, false);
     }
 
-    pub fn swap_8_m(&mut self, mem: &mut [u8]) {
-        let val = mem[self.hl() as usize];
+    pub fn swap_8_m(&mut self, mem: &mut [u8; 1]) {
+        let val = mem[0];
         let swapped = (val & 0x0F) << 4 | (val & 0xF0) >> 4;
-        mem[self.hl() as usize] = swapped;
+        mem[0] = swapped;
         self.set_znhc(swapped == 0, false, false, false);
+    }
+
+    pub fn test_8_r(&mut self, reg_idx: usize, bit_idx: usize) {
+        let test = self.regs[reg_idx] & (1 << bit_idx);
+        self.set_znhc(test == 0, false, true, self.af.c);
+    }
+
+    pub fn test_8_m(&mut self, mem: &[u8; 1], bit_idx: usize) {
+        let test = mem[0] & (1 << bit_idx);
+        self.set_znhc(test == 0, false, true, self.af.c);
+    }
+
+    pub fn res_8_r(&mut self, reg_idx: usize, bit_idx: usize) {
+        self.regs[reg_idx] = self.regs[reg_idx] & !(1 << bit_idx);
+    }
+
+    pub fn res_8_m(&self, mem: &mut [u8; 1], bit_idx: usize) {
+        mem[0] = mem[0] & !(1 << bit_idx);
     }
 }
