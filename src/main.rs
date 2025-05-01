@@ -23,4 +23,8 @@ fn main() {
     println!("{}", cpu);
     cpu.rotl_c_8_r(0);
     println!("{}", cpu);
+    cpu.set_8_r(0, 2);
+    println!("{}", cpu);
+    cpu.res_8_r(0, 2);
+    println!("{}", cpu);
 }
