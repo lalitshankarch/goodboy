@@ -9,19 +9,18 @@ mod helpers;
 use cpu::Cpu;
 
 fn main() {
-    helpers::print_memory_region(0xBABE);
-    helpers::print_io_registers(0xFF07);
     let mut cpu = Cpu::default();
-    cpu.load_8_rv(0, 0xDE);
-    cpu.load_8_rv(1, 0xAD);
-    cpu.load_16_rv(2, 3, 0xBE, 0xEF);
-    cpu.load_16_rv(4, 5, 0xBA, 0xBA);
+    cpu.load_8_rv(0, 0x96);
     println!("{}", cpu);
-    cpu.and_8_rr(2, 5);
+    cpu.rotl_c_8_r(0);
+    cpu.rotr_c_8_r(0);
     println!("{}", cpu);
-    cpu.swap_8_r(4);
-    cpu.load_8_rv(0, 0x00);
-    cpu.test_8_r(0, 3);
-    cpu.res_8_r(1, 3);
+    cpu.rotr_c_8_r(0);
+    println!("{}", cpu);
+    cpu.rotl_c_8_r(0);
+    println!("{}", cpu);
+    cpu.rotl_c_8_r(0);
+    println!("{}", cpu);
+    cpu.rotl_c_8_r(0);
     println!("{}", cpu);
 }

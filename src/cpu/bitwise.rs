@@ -77,4 +77,60 @@ impl Cpu {
     pub fn res_8_m(&self, mem: &mut [u8; 1], bit_idx: usize) {
         mem[0] = mem[0] & !(1 << bit_idx);
     }
+
+    pub fn rotl_8_r(&mut self, reg_idx: usize) {
+        let carry = (self.regs[reg_idx] & 0x80) >> 7;
+        let rotated = self.regs[reg_idx] << 1 | carry;
+        self.regs[reg_idx] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotl_8_m(&mut self, mem: &mut [u8; 1]) {
+        let carry = (mem[0] & 0x80) >> 7;
+        let rotated = mem[0] << 1 | carry;
+        mem[0] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotr_8_r(&mut self, reg_idx: usize) {
+        let carry = self.regs[reg_idx] & 0x1;
+        let rotated = self.regs[reg_idx] >> 1 | (carry << 7);
+        self.regs[reg_idx] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotr_8_m(&mut self, mem: &mut [u8; 1]) {
+        let carry = mem[0] & 0x1;
+        let rotated = mem[0] >> 1 | (carry << 7);
+        mem[0] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotr_c_8_r(&mut self, reg_idx: usize) {
+        let carry = self.regs[reg_idx] & 0x1;
+        let rotated = self.regs[reg_idx] >> 1 | ((self.af.c as u8) << 7);
+        self.regs[reg_idx] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotr_c_8_m(&mut self, mem: &mut [u8; 1]) {
+        let carry = mem[0] & 0x1;
+        let rotated = mem[0] >> 1 | ((self.af.c as u8) << 7);
+        mem[0] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotl_c_8_r(&mut self, reg_idx: usize) {
+        let carry = (self.regs[reg_idx] & 0x80) >> 7;
+        let rotated = self.regs[reg_idx] << 1 | (self.af.c as u8);
+        self.regs[reg_idx] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
+
+    pub fn rotl_c_8_m(&mut self, mem: &mut [u8; 1]) {
+        let carry = (mem[0] & 0x80) >> 7;
+        let rotated = mem[0] << 1 | (self.af.c as u8);
+        mem[0] = rotated;
+        self.set_znhc(rotated == 0, false, false, carry == 1);
+    }
 }
