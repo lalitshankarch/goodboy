@@ -17,10 +17,10 @@ pub struct Accumulator {
 impl Accumulator {
     pub fn to_u16(&self) -> u16 {
         ((self.a as u16) << 8)
-            | ((self.z as u16) * 1 << 7)
-            | ((self.n as u16) * 1 << 6)
-            | ((self.h as u16) * 1 << 5)
-            | ((self.c as u16) * 1 << 4)
+            | (self.z as u16) << 7
+            | (self.n as u16) << 6
+            | (self.h as u16) << 5
+            | (self.c as u16) << 4
     }
 }
 
@@ -34,13 +34,13 @@ pub struct Cpu {
 
 impl Cpu {
     pub fn bc(&self) -> u16 {
-        ((self.regs[0] as u16) << 8) | self.regs[1] as u16
+        (self.regs[0] as u16) << 8 | self.regs[1] as u16
     }
     pub fn de(&self) -> u16 {
-        ((self.regs[2] as u16) << 8) | self.regs[3] as u16
+        (self.regs[2] as u16) << 8 | self.regs[3] as u16
     }
     pub fn hl(&self) -> u16 {
-        ((self.regs[4] as u16) << 8) | self.regs[5] as u16
+        (self.regs[4] as u16) << 8 | self.regs[5] as u16
     }
 }
 
